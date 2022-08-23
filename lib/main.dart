@@ -32,6 +32,7 @@ class _MyAppState extends State<MyApp> {
         body: SafeArea(
           child: WebView(
             initialUrl: 'https://star-friends.com',
+            javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
               FlutterNativeSplash.remove();
             },
