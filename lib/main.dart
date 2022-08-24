@@ -17,6 +17,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  WebViewController? _webViewController;
+  
   @override
   void initState() {
     super.initState();
@@ -28,14 +31,26 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Star-Friends',
-      home: Scaffold(
-        body: SafeArea(
-          child: WebView(
-            initialUrl: 'https://star-friends.com',
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) {
-              FlutterNativeSplash.remove();
-            },
+      home: WillPopScope(
+        onWillPop: () async {
+          if(_webViewController != null) {
+            if (await _webViewController!.canGoBack()) {
+              await _webViewController!.goBack();
+              return false;
+            }
+          }
+          return true;
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: WebView(
+              initialUrl: 'https://star-friends.com',
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                _webViewController = webViewController;
+                FlutterNativeSplash.remove();
+              },
+            ),
           ),
         ),
       ),
