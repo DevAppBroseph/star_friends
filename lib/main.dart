@@ -1,7 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -18,13 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  WebViewController? _webViewController;
-  
-  @override
-  void initState() {
-    super.initState();
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
-  }
+  InAppWebViewController? _webViewController;
   
   @override
   Widget build(BuildContext context) {
@@ -43,11 +36,14 @@ class _MyAppState extends State<MyApp> {
         },
         child: Scaffold(
           body: SafeArea(
-            child: WebView(
-              initialUrl: 'https://star-friends.com',
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _webViewController = webViewController;
+            child: InAppWebView(
+              initialUrlRequest: URLRequest(url: Uri.parse('https://star-friends.com')),
+              initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(
+                ),
+              ),
+              onWebViewCreated: (controller) {
+                _webViewController = controller;
                 FlutterNativeSplash.remove();
               },
             ),

@@ -55,3 +55,4 @@ pubspeck.lock
 .flutter-plugins-dependencies
 analysis_optioans.yaml
 .metadata
+pubspec.lock
